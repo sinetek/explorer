@@ -260,19 +260,21 @@ router.get('/ext/summary', function(req, res) {
     lib.get_hashrate(function(hashrate) {
       lib.get_connectioncount(function(connections){
         lib.get_blockcount(function(blockcount) {
-          db.get_stats(settings.coin, function (stats) {
-            if (hashrate == 'There was an error. Check your console.') {
-              hashrate = 0;
-            } 
-            res.send({ data: [{ 
-              difficulty: difficulty, 
-              supply: stats.supply,
-              hashrate: hashrate,
-              lastPrice: stats.last_price,
-              connections: connections,
-              blockcount: blockcount,
-              available: "TBA",
-            }]});
+          lib.get_available_coins(function(available) {
+            db.get_stats(settings.coin, function (stats) {
+              if (hashrate == 'There was an error. Check your console.') {
+                hashrate = 0;
+              } 
+              res.send({ data: [{ 
+                difficulty: difficulty, 
+                supply: stats.supply,
+                hashrate: hashrate,
+                lastPrice: stats.last_price,
+                connections: connections,
+                blockcount: blockcount,
+                available: "TBA",
+              }]});
+            });
           });
         });
       });
