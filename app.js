@@ -99,15 +99,73 @@ app.use('/ext/getlasttxs/:count/:min', function(req,res){
   });
 });
 
-app.use('/ext/__getmb/', function(req,res){
-	/* get the first address' balance */
-	db.get_address("CKMjFS8QSUh7GM7mb3YQegBHahoF4UJ417", function (address) {
-		if (address) {
-			res.send((address.balance / 100000000).toString().replace(/(^-+)/mg, ''));
-		} else {
-			res.send({ error: 'An error occurred.' });
-		}
+app.use('/ext/getavailablecoins/', function(req,res){
+
+	/* Coming from C++ here; how do I avoid this tabbing nonsense in nodejs? */
+
+	/* start from the global supply of coins. */
+	lib.get_supply(function(supply){
+		supply *= 100000000;
+
+		/* 1st */
+		db.get_address("CKMjFS8QSUh7GM7mb3YQegBHahoF4UJ417", function (address) {
+			if (address) {
+				supply -= address.balance;
+
+				/* 2nd */
+		                db.get_address("CVpN8XeW6ipdaR9tMy4shp4hhMTzDfA9Zf", function (address) {
+					if (address) {
+						supply -= address.balance;
+
+						/* 3rd */
+						db.get_address("Ce4jaucFG2tb9QrDXXQChwi8SV5dyN85Bk", function(address) {
+						if (address) {
+							supply -= address.balance;
+
+							/* 4th */
+							db.get_address("CWdu1jDbGbZWv1jStGgwvrdMZXF1dQtvk9", function (address) {
+							if (address) {
+								supply -= address.balance;
+
+								/* 5th */
+								db.get_address("Cfh23e4EqYfBLugAMjwMgCaErACcrE6Phc", function (address) {
+								if (address) {
+									supply -= address.balance;
+
+									/* 6th */
+									db.get_address("CKp77D3GBkE95T6bbPtGEDezafb79EycT8", function (address) {
+									if (address) {
+										supply -= address.balance;
+
+										res.send((supply / 100000000).toString().replace(/(^-+)/mg, ''));
+									} else {
+										res.send({ error: 'An error occurred.' });
+									}
+									});
+								} else {
+									res.send({ error: 'An error occurred.' });
+								}
+								});
+							} else {
+								res.send({ error: 'An error occurred.' });
+							}
+							});
+						} else {
+							res.send({ error: 'An error occurred.' });
+						}
+						});
+					} else {
+						res.send({ error: 'An error occurred.' });
+					}
+				});
+
+			} else {
+				res.send({ error: 'An error occurred.' });
+			}
+		});
 	});
+
+
 });
 
 // locals
