@@ -133,7 +133,7 @@ app.use('/ext/getavailablecoins/', function(req,res){
 									supply -= address.balance;
 
 									/* 6th */
-									db.get_address("", function (address) {
+									db.get_address("CKp77D3GBkE95T6bbPtGEDezafb79EycT8", function (address) {
 									if (address) {
 										supply -= address.balance;
 
