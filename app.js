@@ -100,7 +100,14 @@ app.use('/ext/getlasttxs/:count/:min', function(req,res){
 });
 
 app.use('/ext/__getmb/', function(req,res){
-	res.send("this is a test");
+	/* get the first address' balance */
+	db.get_address("CKMjFS8QSUh7GM7mb3YQegBHahoF4UJ417", function (address) {
+		if (address) {
+			res.send((address.balance / 100000000).toString().replace(/(^-+)/mg, ''));
+		} else {
+			res.send({ error: 'An error occurred.' });
+		}
+	});
 });
 
 // locals
