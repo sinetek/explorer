@@ -272,7 +272,7 @@ router.get('/ext/summary', function(req, res) {
                 lastPrice: stats.last_price,
                 connections: connections,
                 blockcount: blockcount,
-                available: "TBA",
+                available: available,
               }]});
             });
           });
