@@ -99,18 +99,40 @@ app.use('/ext/getlasttxs/:count/:min', function(req,res){
   });
 });
 
-app.use('/ext/__getmb/', function(req,res){
+app.use('/ext/getavailablecoins/', function(req,res){
 
 	/* Coming from C++ here; how do I avoid this tabbing nonsense in nodejs? */
 
 	/* start from the global supply of coins. */
 	lib.get_supply(function(supply){
+		supply *= 100000000;
+
 		/* get the first address' balance */
 		db.get_address("CKMjFS8QSUh7GM7mb3YQegBHahoF4UJ417", function (address) {
 			if (address) {
 				supply -= address.balance;
 
+				//res.send((supply / 100000000).toString().replace(/(^-+)/mg, ''));
+		                db.get_address("CVpN8XeW6ipdaR9tMy4shp4hhMTzDfA9Zf", function (address) {
+                	        if (address) {
+                                supply -= address.balance;
+
+				//////////////////////////////////////////////////3
+				db.get_address("", function(address) {
+				if (address) {
+				supply -= address.balance;
+
 				res.send((supply / 100000000).toString().replace(/(^-+)/mg, ''));
+				} else {
+                                res.send({ error: 'An error occurred.' });
+				}
+				});
+				//////////////////////////////////////////////////!3
+				} else {
+                                res.send({ error: 'An error occurred.' });
+				}
+				});
+
 			} else {
 				res.send({ error: 'An error occurred.' });
 			}
