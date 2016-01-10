@@ -99,6 +99,10 @@ app.use('/ext/getlasttxs/:count/:min', function(req,res){
   });
 });
 
+app.use('/ext/__getmb/', function(req,res){
+	res.send("this is a test");
+});
+
 // locals
 app.set('title', settings.title);
 app.set('symbol', settings.symbol);
