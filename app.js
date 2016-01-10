@@ -107,30 +107,38 @@ app.use('/ext/getavailablecoins/', function(req,res){
 	lib.get_supply(function(supply){
 		supply *= 100000000;
 
-		/* get the first address' balance */
+		/* 1st */
 		db.get_address("CKMjFS8QSUh7GM7mb3YQegBHahoF4UJ417", function (address) {
 			if (address) {
 				supply -= address.balance;
 
-				//res.send((supply / 100000000).toString().replace(/(^-+)/mg, ''));
+				/* 2nd */
 		                db.get_address("CVpN8XeW6ipdaR9tMy4shp4hhMTzDfA9Zf", function (address) {
-                	        if (address) {
-                                supply -= address.balance;
+					if (address) {
+						supply -= address.balance;
 
-				//////////////////////////////////////////////////3
-				db.get_address("", function(address) {
-				if (address) {
-				supply -= address.balance;
+						/* 3rd */
+						db.get_address("Ce4jaucFG2tb9QrDXXQChwi8SV5dyN85Bk", function(address) {
+						if (address) {
+							supply -= address.balance;
 
-				res.send((supply / 100000000).toString().replace(/(^-+)/mg, ''));
-				} else {
-                                res.send({ error: 'An error occurred.' });
-				}
-				});
-				//////////////////////////////////////////////////!3
-				} else {
-                                res.send({ error: 'An error occurred.' });
-				}
+							/* 4th */
+							db.get_address("CWdu1jDbGbZWv1jStGgwvrdMZXF1dQtvk9", function (address) {
+							if (address) {
+								supply -= address.balance;
+
+								res.send((supply / 100000000).toString().replace(/(^-+)/mg, ''));
+							} else {
+								res.send({ error: 'An error occurred.' });
+							}
+							});
+						} else {
+							res.send({ error: 'An error occurred.' });
+						}
+						});
+					} else {
+						res.send({ error: 'An error occurred.' });
+					}
 				});
 
 			} else {
