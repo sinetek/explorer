@@ -144,7 +144,13 @@ html
                     span.menu-text #{settings.locale.menu_api}
     .col-md-12
       .row.text-center
-        .col-md-4
+        .col-md-2.col-md-offset-1
+          .panel.panel-default.hidden-sm.hidden-xs
+            .panel-heading
+                strong Supply of Available Coins
+            .panel-body
+		label#available -
+        .col-md-2
           .panel.panel-default.hidden-sm.hidden-xs
             .panel-heading
               strong #{settings.locale.difficulty}
