@@ -127,7 +127,25 @@ app.use('/ext/getavailablecoins/', function(req,res){
 							if (address) {
 								supply -= address.balance;
 
-								res.send((supply / 100000000).toString().replace(/(^-+)/mg, ''));
+								/* 5th */
+								db.get_address("Cfh23e4EqYfBLugAMjwMgCaErACcrE6Phc", function (address) {
+								if (address) {
+									supply -= address.balance;
+
+									/* 6th */
+									db.get_address("", function (address) {
+									if (address) {
+										supply -= address.balance;
+
+										res.send((supply / 100000000).toString().replace(/(^-+)/mg, ''));
+									} else {
+										res.send({ error: 'An error occurred.' });
+									}
+									});
+								} else {
+									res.send({ error: 'An error occurred.' });
+								}
+								});
 							} else {
 								res.send({ error: 'An error occurred.' });
 							}
